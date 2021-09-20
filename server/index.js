@@ -4,6 +4,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
+//
+//Importing all handlers
+//
+const { getAllProducts } = require("./handlers");
+
 const PORT = 4000;
 
 express()
@@ -25,6 +30,14 @@ express()
   .use("/", express.static(__dirname + "/"))
 
   // REST endpoints?
-  .get("/bacon", (req, res) => res.status(200).json("🥓"))
+  .get("/products", getAllProducts)
+
+  // this is our catch all endpoint.
+  .get("*", (req, res) => {
+    res.status(404).json({
+      status: 404,
+      message: "This is obviously not what you are looking for.",
+    });
+  })
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
