@@ -8,6 +8,8 @@ const morgan = require("morgan");
 //Importing all handlers
 //
 const { getAllProducts } = require("./handlers");
+//const { getCompanyById, updateInventory } = require('./handlers');
+
 
 const PORT = 4000;
 
@@ -31,6 +33,8 @@ express()
 
   // REST endpoints?
   .get("/products", getAllProducts)
+  .get('/companies/:_id', getCompanyById)
+  .put('/items/:_id', updateInventory)
 
   // this is our catch all endpoint.
   .get("*", (req, res) => {
