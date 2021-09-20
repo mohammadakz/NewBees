@@ -27,4 +27,44 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts };
+
+const getCompanyById = (req, res) => {
+    const id = Number(req.params._id);
+    const foundCompany = companies.find((company) => company._id === id);
+    if (foundCompany) {
+        res.status(200).json({
+            status: 200,
+            message: 'Success: Company Found!',
+            data: foundCompany
+        });
+    } else {
+        res.status(400).json({
+            status: 400,
+            message: 'No company with that ID found',
+            dataSent: req.params
+        });
+    };
+};
+/* const updateInventory = (req, res) => {
+    try {
+        let updatedItem = '';
+        const itemId = Number(req.params_id);
+        const numPurchased = Number(req.body.numPurchased);
+        for (let item of items) {
+            if (item._id === itemId) {
+                item.numInStock =- numPurchased;
+                updatedItem = item;
+            }
+        }
+        res.status(200).json({
+            status: 200,
+            message: "Item updated!",
+            data: updatedItem
+        })
+    } catch (err) {
+        console.log(err.stack)
+    }
+
+} */
+
+module.exports = { getAllProducts, getCompanyById, updateInventory };
