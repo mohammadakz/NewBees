@@ -7,7 +7,12 @@ const morgan = require("morgan");
 //
 //Importing all handlers
 //
-const { getAllProducts, getProductById, getCompanyById, updateInventory } = require("./handlers");
+const {
+  getAllProducts,
+  getProductById,
+  getCompanyById,
+  updateInventory,
+} = require("./handlers");
 
 const PORT = 4000;
 
@@ -31,14 +36,8 @@ express()
 
   // REST endpoints?
   .get("/products", getAllProducts)
-<<<<<<< Updated upstream
-  .get('/products/:_id', getProductById)
-  .get('/companies/:_id', getCompanyById)
-  .put('/products/:_id', updateInventory)
-=======
-  // .get('/companies/:_id', getCompanyById)
-  // .put('/items/:_id', updateInventory)
->>>>>>> Stashed changes
+  .get("/companies/:_id", getCompanyById)
+  .put("/items/:_id", updateInventory)
 
   // this is our catch all endpoint.
   .get("*", (req, res) => {

@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 0.25rem;
+  grid-gap: 2rem;
   margin: auto;
 `;
 export default Home;
