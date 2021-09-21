@@ -1,16 +1,37 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import Header from "./Header";
+import Nav from "./Nav";
 import Home from "./Home";
+import About from "./About";
+import Contact from "./Contact";
+import Cart from "./Cart";
+import ProductDetails from "./ProductDetails";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
+      <Header>
+        <Nav />
+      </Header>
       <Switch>
-        <Route exact path="/">
+        <Route path="/" exact>
           <Home />
         </Route>
+        <Route path="/contact">
+          <About />
+        </Route>
+        <Route path="/about">
+          <Contact />
+        </Route>
+        <Route path="/cart">
+          <Cart />
+        </Route>
+        <Route path="/products/:productId">
+          <ProductDetails />
+        </Route>
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 }
 
