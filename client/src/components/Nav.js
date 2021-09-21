@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import AuthNav from "./auth0-buttons/auth-nav";
+import CartContext from "./Hooks/Cart/CartContext";
 
 const Nav = () => {
+  const { cartItems } = useContext(CartContext);
+
   return (
     <Navivation>
       <h1>New Bees</h1>
@@ -21,6 +24,8 @@ const Nav = () => {
           <StyledNav to="/cart">Cart</StyledNav>
         </li>
       </NavigationUl>
+      {cartItems.length > 0 && <h3>{cartItems.length}</h3>}
+
       <AuthNav />
     </Navivation>
   );
