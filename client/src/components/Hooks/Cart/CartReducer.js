@@ -12,7 +12,9 @@ const CartReducer = (state, action) => {
     case remove_from_cart: {
       return {
         ...state,
-        cartItems: state.cartItems.filter((item) => item.id !== action.payload),
+        cartItems: state.cartItems.filter(
+          (item, index) => item.name[index] !== action.payload
+        ),
       };
     }
 

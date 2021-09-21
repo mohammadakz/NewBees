@@ -9,10 +9,10 @@ const ProductCard = () => {
 
   useEffect(() => {
     const fetchProductData = async () => {
-      const res = await fetch(`https://fakestoreapi.com/products`);
+      const res = await fetch(`/products`);
       const data = await res.json();
       console.log(data);
-      setProductData(data);
+      setProductData(data.data);
       setLoading(false);
     };
     fetchProductData();
@@ -24,10 +24,10 @@ const ProductCard = () => {
     <>
       {productData.map((item) => {
         return (
-          <ProductWrap key={item}>
-            <Img src={item.image} />
-            <h2>{item.title}</h2>
-            <h3>${item.price}</h3>
+          <ProductWrap key={item.name}>
+            <Img src={item.imageSrc} />
+            <h2>{item.name}</h2>
+            <h3>{item.price}</h3>
             <button onClick={() => addItemsToCart(item)}>ADD TO CARD</button>
           </ProductWrap>
         );
