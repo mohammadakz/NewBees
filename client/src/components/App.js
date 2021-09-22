@@ -7,6 +7,7 @@ import Contact from "./Contact";
 import Cart from "./Cart";
 import Footer from "./Footer";
 import ProductDetails from "./ProductDetails";
+import ConfirmationPage from "./ConfirmationPage";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
         </Route>
         <Route path="/cart">
           <Cart />
+        </Route>
+        <Route path="/confirmation">
+          <ConfirmationPage />
         </Route>
         <Route path="/products/:productId">
           <ProductDetails />
