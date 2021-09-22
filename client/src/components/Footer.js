@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
-  witdth: 75%;
+  width: 75%;
   margin: 25px auto;
   font-family: sans-serif;
 

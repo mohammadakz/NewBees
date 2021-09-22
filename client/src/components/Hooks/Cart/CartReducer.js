@@ -1,4 +1,4 @@
-import { add_to_cart, remove_from_cart } from "./CartContext";
+import { add_to_cart, remove_from_cart, updateCartDb } from "./CartContext";
 
 const CartReducer = (state, action) => {
   switch (action.type) {
@@ -15,6 +15,12 @@ const CartReducer = (state, action) => {
         cartItems: state.cartItems.filter(
           (item, index) => item.name[index] !== action.payload
         ),
+      };
+    }
+    case updateCartDb: {
+      return {
+        ...state,
+        cartItems: action.payload,
       };
     }
 

@@ -156,6 +156,62 @@ const getUserInfo = async (req, res) => {
   }
 };
 
+const postCart = async (req, res) => {
+  try {
+    const { items, email } = req.body;
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const _id = uuidv4();
+
+    const usersCart = {
+      _id,
+      email,
+      items,
+    };
+
+    const existingCart = await db
+      .collection("UsersCart")
+      .findOne({ email: req.body.email });
+
+    if (existingCart === null) {
+      await db.collection("UsersCart").insertOne(usersCart);
+      sendResponse({ res, status: 200, message: "user's cart added" });
+      client.close();
+    } else {
+      const newCartItems = { $set: { items: usersCart.items } };
+      await db
+        .collection("UsersCart")
+        .updateOne({ email: req.body.email }, newCartItems);
+
+      sendResponse({ res, status: 200, message: "cart is updated now" });
+      client.close();
+    }
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
+const getCart = async (req, res) => {
+  try {
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const user = await db
+      .collection("UsersCart")
+      .findOne({ email: req.body.email });
+
+    if (user.email === req.body.email) {
+      sendResponse({ res, status: 200, data: user.items });
+    } else {
+      sendResponse({ res, status: 200, message: "nothing was found in db" });
+    }
+    client.close();
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -163,4 +219,6 @@ module.exports = {
   updateInventory,
   postUserInfo,
   getUserInfo,
+  postCart,
+  getCart,
 };

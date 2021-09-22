@@ -1,9 +1,51 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import CartContext from "./Hooks/Cart/CartContext";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Cart = () => {
-  const { cartItems, removeItemsFromCart } = useContext(CartContext);
+  const { cartItems, removeItemsFromCart, updateCart } = useContext(
+    CartContext
+  );
+  const { user, isAuthenticated } = useAuth0();
+
+  React.useEffect(() => {
+    console.log(isAuthenticated);
+    if (isAuthenticated) {
+      console.log("hello");
+      fetch("/getcart", {
+        method: "POST",
+        body: JSON.stringify({ email: user.email }),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          updateCart(data.data);
+        });
+    }
+  }, [isAuthenticated]);
+
+  ///
+  ///
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      const userData = {
+        email: user.email,
+        items: cartItems,
+      };
+      fetch("/cart", {
+        method: "POST",
+        body: JSON.stringify(userData),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+    }
+  }, []);
 
   return (
     <Wrapper>
