@@ -5,6 +5,7 @@ import Home from "./Home";
 import About from "./About";
 import Contact from "./Contact";
 import Cart from "./Cart";
+import Footer from "./Footer";
 import ProductDetails from "./ProductDetails";
 
 function App() {
@@ -15,10 +16,10 @@ function App() {
         <Route path="/" exact>
           <Home />
         </Route>
-        <Route path="/contact">
+        <Route path="/about">
           <About />
         </Route>
-        <Route path="/about">
+        <Route path="/contact">
           <Contact />
         </Route>
         <Route path="/cart">
@@ -28,6 +29,7 @@ function App() {
           <ProductDetails />
         </Route>
       </Switch>
+      <Footer />
     </Router>
   );
 }

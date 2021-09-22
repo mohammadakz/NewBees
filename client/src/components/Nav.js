@@ -9,7 +9,6 @@ const Nav = () => {
 
   return (
     <Navivation>
-      <h1>New Bees</h1>
       <NavigationUl>
         <li>
           <StyledNav to="/">Home</StyledNav>
@@ -42,12 +41,13 @@ const NavigationUl = styled.ul`
   justify-content: space-between;
   align-items: baseline;
   width: 20vw;
+  margin-right: 30px;
   list-style: none;
 `;
 
 const StyledNav = styled(Link)`
   text-decoration: none;
-  color: black;
+  color: #2f3437;
   font-size: 20px;
 `;
 export default Nav;

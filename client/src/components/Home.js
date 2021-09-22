@@ -22,7 +22,7 @@ const TempHeader = styled.div`
 
 const Wrapper = styled.div`
   width: 75%;
-  height: 100vh;
+
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 2rem;

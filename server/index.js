@@ -36,8 +36,9 @@ express()
 
   // REST endpoints?
   .get("/products", getAllProducts)
+  .get("/products/:_id", getProductById)
   .get("/companies/:_id", getCompanyById)
-  .put("/items/:_id", updateInventory)
+  .put("/products/:_id", updateInventory)
 
   // this is our catch all endpoint.
   .get("*", (req, res) => {
