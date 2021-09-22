@@ -112,9 +112,55 @@ const updateInventory = async (req, res) => {
   }
 };
 
+const postUserInfo = async (req, res) => {
+  try {
+    const { fullName, email, image } = req.body;
+    const _id = uuidv4();
+    const userInfo = {
+      _id,
+      fullName,
+      email,
+      image,
+    };
+
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const existingUser = await db
+      .collection("Usersinfo")
+      .findOne({ email: req.body.email });
+
+    if (existingUser === null) {
+      await db.collection("Usersinfo").insertOne(userInfo);
+      sendResponse({ res, status: 200, message: "user added to db" });
+
+      client.close();
+    } else {
+      sendResponse({ res, status: 300, message: "user already exists" });
+    }
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
+const getUserInfo = async (req, res) => {
+  try {
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const users = await db.collection("Usersinfo").find().toArray();
+    sendResponse({ res, status: 200, data: users });
+    client.close();
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   getCompanyById,
   updateInventory,
+  postUserInfo,
+  getUserInfo,
 };

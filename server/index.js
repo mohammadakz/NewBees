@@ -12,6 +12,8 @@ const {
   getProductById,
   getCompanyById,
   updateInventory,
+  postUserInfo,
+  getUserInfo,
 } = require("./handlers");
 
 const PORT = 4000;
@@ -36,15 +38,12 @@ express()
 
   // REST endpoints?
   .get("/products", getAllProducts)
-<<<<<<< Updated upstream
   .get("/products/:_id", getProductById)
   .get("/companies/:_id", getCompanyById)
   .put("/products/:_id", updateInventory)
-=======
-  .get('/products/:_id', getProductById)
-  .get('/companies/:_id', getCompanyById)
-  .put('/products/:_id', updateInventory)
->>>>>>> Stashed changes
+  //users endpoints
+  .get("/users", getUserInfo)
+  .post("/users", postUserInfo)
 
   // this is our catch all endpoint.
   .get("*", (req, res) => {
