@@ -14,10 +14,10 @@ const CategoryCards = ({ categoryName }) => {
     setCategorySelected(category);
     setIsSelected(true);
   }
-  return categories.map((category) => {
+  return categories.map((category, index) => {
     console.log(category.imgSrc);
     return (
-    <Wrapper to={`/categories/${category}`}>
+    <Wrapper to={`/categories/${category.name}`}>
         <img src={category.imgSrc} style={{'height':'150px'}}/>
         <name>{category.name}</name>
     </Wrapper>
