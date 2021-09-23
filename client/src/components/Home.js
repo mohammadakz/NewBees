@@ -1,22 +1,19 @@
 import React, { useContext, useState } from "react";
 import ProductCard from "./ProductCard";
 import styled from "styled-components";
-import CartContext from "./Hooks/Cart/CartContext";
-import Category from "./CategoryCards";
-import { CategoryContext } from "./CategoryContext";
-import CategoryDisplay from "./CategoryDisplay";
-import CategoryCards from "./CategoryCards";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-  const { addItemsToCart, cartItems } = useContext(CartContext);
-  const { categorySelected, setCategorySelected, isSelected, setIsSelected } = React.useContext(CategoryContext);
-
   return (
     <>
+      <SubNav>
+        <SubNavLink to={"/"}>All Products</SubNavLink>
+        <br />
+        <SubNavLink to={"/categories"}>View Categories</SubNavLink>
+      </SubNav>
       <Wrapper>
-          <CategoryCards />
-        {/*         <ProductCard />
- */}      </Wrapper>
+        <ProductCard />
+      </Wrapper>
     </>
   );
 };
@@ -32,4 +29,14 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const SubNav = styled.div`
+  display: flex;
+  margin: 0 auto 5% auto;
+  width: 40%;
+  height: 4vh;
+  justify-content: space-evenly;
+`;
+
+const SubNavLink = styled(Link)``;
 export default Home;

@@ -6,9 +6,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Checkout from "./Checkout";
 
 const Cart = () => {
-  const { cartItems, removeItemsFromCart, updateCart } = useContext(
-    CartContext
-  );
+  const { cartItems, removeItemsFromCart, updateCart } =
+    useContext(CartContext);
   const { user, isAuthenticated } = useAuth0();
   const [loading, setLoading] = useState(true);
 
