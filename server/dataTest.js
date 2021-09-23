@@ -1,9 +1,19 @@
 const fs = require("file-system");
 
-const companies = JSON.parse(fs.readFileSync("data/companies.json"));
-const items = JSON.parse(fs.readFileSync("data/items.json"));
+const companies = require('./data/companies.json');
+const items = require('./data/items.json');
 
-const updatedArr = [];
+const refItems = items.filter((item) => typeof item.price === 'string');
+console.log(refItems.length);
+console.log(items.length);
+
+
+
+let categories = new Set();
+items.forEach((item) => categories.add(item.category));
+console.log(categories);
+
+/* const updatedArr = [];
 
 companies.forEach((item) => {
   updatedArr.push({
@@ -13,6 +23,7 @@ companies.forEach((item) => {
     _id: item.id,
   });
 });
+
 
 const updatedItems = [];
 items.forEach((item) => {
@@ -25,8 +36,8 @@ items.forEach((item) => {
     imageSrc: item.imageSrc,
   });
 });
-
+ */
 // fs.writeFileSync("data/fixedCompanies.json", JSON.stringify(updatedArr));
-fs.writeFileSync("data/fixedItems.json", JSON.stringify(updatedItems));
+//fs.writeFileSync("data/fixedItems.json", JSON.stringify(updatedItems));
 
 // module.exports = { updatedArr };
