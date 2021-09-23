@@ -14,10 +14,10 @@ const LoginButton = () => {
 };
 
 const StyledButton = styled.button`
-  border: none;
+  width: 125px;
   background: none;
   font-size: 1.2rem;
-  padding: 12px 20px;
+  padding: 12px 0;
   background-color: #ffd750;
   border: 2px solid #ffd750;
   border-radius: 5px;

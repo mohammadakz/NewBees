@@ -19,17 +19,19 @@ const LogoutButton = () => {
 };
 
 const StyledButton = styled.button`
-  border: none;
+  position: relative;
+  width: 125px;
   background: none;
   font-size: 1.2rem;
-  padding: 1rem 2rem;
-  background-color: #438ea7;
-  border-radius: 1.2rem;
-  color: white;
+  padding: 12px 0;
+  background-color: #ffffff;
+  border: 2px solid #2f3437;
+  border-radius: 5px;
+  color: #2f3437;
   cursor: pointer;
   &:hover {
-    background-color: lightgray;
-    color: #438ea7;
+    background-color: #fff;
+    border: 2px solid #2f3437;
     transition: 0.3s ease-in-out all;
   }
 `;
