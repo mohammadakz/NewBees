@@ -56,7 +56,7 @@ express()
   .put("/cartupdate", updateCart)
   .delete("/checkout", deleteCart)
 
-  .get("/products/catogories/:_id", getProductsByCategory)
+  .get("/products/categories/:_id", getProductsByCategory)
   // this is our catch all endpoint.
   .get("*", (req, res) => {
     res.status(404).json({

@@ -9,7 +9,7 @@ import Footer from "./Footer";
 import ProductDetails from "./ProductDetails";
 import ConfirmationPage from "./ConfirmationPage";
 import { GlobalStyles } from "./Global/GlobalStyles";
-import CategoryCards from "./CategoryCards";
+import CategoryDisplay from "./CategoryDisplay";
 
 function App() {
   return (
@@ -38,7 +38,9 @@ function App() {
         <Route path="/products/:productId">
           <ProductDetails />
         </Route>
-        <Route path="/categories/:categoryId"></Route>
+        <Route path="/categories/:categoryId">
+          <CategoryDisplay />
+        </Route>
       </Switch>
       <Footer />
     </Router>
