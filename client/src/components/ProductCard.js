@@ -5,6 +5,7 @@ import CartContext from "./Hooks/Cart/CartContext";
 import PlusIcon from "../assets/plus_icon.svg";
 import MinusIcon from "../assets/minus_icon.svg";
 import loadingGif from "../assets/loading.gif";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const ProductCard = () => {
   const { addItemsToCart, cartItems } = useContext(CartContext);
@@ -12,23 +13,9 @@ const ProductCard = () => {
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(0);
+  const [cart, setCart] = useState();
 
   const [page, setPage] = useState(1);
-
-  // to increase number of item
-  const incrementItem = () => {
-    setQuantity(quantity + 1);
-  };
-
-  // to increase number of item
-
-  const decrementItem = () => {
-    if (quantity === 0) {
-      return;
-    } else {
-      setQuantity(quantity - 1);
-    }
-  };
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -42,42 +29,51 @@ const ProductCard = () => {
     fetchProductData();
   }, []);
 
+  // const updateCount = () => {
+  //   let updateAmount = cart.map(item => item.id === id ? item.)
+  // }
+
   return loading ? (
     <LoadingGif src={loadingGif} />
   ) : (
     <>
       {productData.map((item) => {
         return (
-          <ProductWrap key={item.name}>
-            <ItemLink to={`/products/${item._id}`}>
-              <Img style={{ backgroundImage: `url(${item.imageSrc})` }} />
-              <ProductContent>
-                <h5>{item.name}</h5>
-              </ProductContent>
-            </ItemLink>
-            <PriceAddRemove>
-              <h4>{item.price}</h4>
+          <InfiniteScroll
+            dataLength={productData.length} //This is important field to render the next data
+            next={() => setPage(page + 1)}
+            hasMore={true}
+            // loader={<h4>Loading...</h4>}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+            <ProductWrap key={item.name}>
+              <ItemLink to={`/products/${item._id}`}>
+                <Img style={{ backgroundImage: `url(${item.imageSrc})` }} />
+                <ProductContent>
+                  <h5>{item.name}</h5>
+                </ProductContent>
+              </ItemLink>
+              <PriceAdd>
+                <h4>{item.price}</h4>
+              </PriceAdd>
+
+              {/* {item.numInStock < 11 ? <p>Only {item.numInStock} left!</p> : null} */}
+
               {item.numInStock > 0 ? (
-                <IconWrap>
-                  <Minus src={MinusIcon} onClick={() => decrementItem(item)} />
-                  <div>{quantity}</div>
-                  <Plus src={PlusIcon} onClick={() => incrementItem(item)} />
-                </IconWrap>
-              ) : null}
-            </PriceAddRemove>
-
-            {/* {item.numInStock < 11 ? <p>Only {item.numInStock} left!</p> : null} */}
-
-            {item.numInStock > 0 ? (
-              <AddButton onClick={() => addItemsToCart(item)}>
-                Add to Cart
-              </AddButton>
-            ) : (
-              <AddButton onClick={() => addItemsToCart(item)} disabled>
-                Out of Stock
-              </AddButton>
-            )}
-          </ProductWrap>
+                <AddButton onClick={() => addItemsToCart(item)}>
+                  Add to Cart
+                </AddButton>
+              ) : (
+                <AddButton onClick={() => addItemsToCart(item)} disabled>
+                  Out of Stock
+                </AddButton>
+              )}
+            </ProductWrap>
+          </InfiniteScroll>
         );
       })}
     </>
@@ -108,7 +104,7 @@ const ItemLink = styled(Link)`
 
 const Img = styled.div`
   width: 100%;
-  height: 300px;
+  height: 270px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -118,7 +114,7 @@ const ProductContent = styled.div`
   padding: 3%;
 `;
 
-const PriceAddRemove = styled.div`
+const PriceAdd = styled.div`
   width: 90%;
   display: flex;
   justify-content: space-between;

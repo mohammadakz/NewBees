@@ -1,8 +1,25 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
 import CartContext from "./Hooks/Cart/CartContext";
 
 const Checkout = ({ modal, setModal }) => {
+  const checkoutRef = useRef();
+  const closeModal = (e) => {
+    if (checkoutRef.current === e.target) {
+      setModal(false);
+    }
+  };
+
+  //animating the modal
+  const animation = useSpring({
+    config: {
+      duration: 200,
+    },
+    opacity: modal ? 1 : 0,
+    transform: modal ? `translateY(0%)` : `translateY(100%)`,
+  });
+
   const { cartItems, removeItemsFromCart, updateCart } =
     useContext(CartContext);
 
@@ -16,17 +33,19 @@ const Checkout = ({ modal, setModal }) => {
   return (
     <>
       {modal ? (
-        <Container>
-          <Wrapper>
-            <Form>
-              <Input type="text" placeholder="Full Name"></Input>
-              <Input type="text" placeholder="Billing Address"></Input>
-              <Input type="number" placeholder="Credit Card Number"></Input>
-              <div>Total</div>
-              <div>${updatedCartPrice}</div>
-              <AddButton>Checkout</AddButton>
-            </Form>
-          </Wrapper>
+        <Container ref={checkoutRef} onClick={closeModal}>
+          <animated.div style={animation}>
+            <Wrapper modal={modal}>
+              <Form>
+                <Input type="text" placeholder="Full Name"></Input>
+                <Input type="text" placeholder="Billing Address"></Input>
+                <Input type="number" placeholder="Credit Card Number"></Input>
+                <div>Total</div>
+                <div>${updatedCartPrice}</div>
+                <AddButton>Checkout</AddButton>
+              </Form>
+            </Wrapper>
+          </animated.div>
         </Container>
       ) : null}
     </>
@@ -35,6 +54,7 @@ const Checkout = ({ modal, setModal }) => {
 
 const Container = styled.div`
   display: grid;
+  position: absolute;
   grid-template-columns: 1fr;
   background-color: rgba(0, 0, 0, 0.3);
   width: 100vw;

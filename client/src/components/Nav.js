@@ -12,6 +12,9 @@ const Nav = () => {
     <Navivation>
       <NavigationUl>
         <Li>
+          <SearchBar />
+        </Li>
+        <Li>
           <StyledNav to="/">Home</StyledNav>
         </Li>
         <Li>
@@ -23,11 +26,8 @@ const Nav = () => {
         <Li>
           <StyledNav to="/cart">Cart</StyledNav>
         </Li>
-        <Li>
-          <SearchBar />
-        </Li>
       </NavigationUl>
-      {cartItems.length > 0 && <h3>{cartItems.length}</h3>}
+      {cartItems.length && <h3>{cartItems.length}</h3>}
       <AuthNav />
     </Navivation>
   );
@@ -36,15 +36,15 @@ const Nav = () => {
 const Navivation = styled.nav`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 `;
 
 const NavigationUl = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  width: 30vw;
-  margin-right: 30px;
+  /* width: 30vw; */
+  /* margin-right: 30px; */
   list-style: none;
 `;
 
