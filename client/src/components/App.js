@@ -8,10 +8,12 @@ import Cart from "./Cart";
 import Footer from "./Footer";
 import ProductDetails from "./ProductDetails";
 import ConfirmationPage from "./ConfirmationPage";
+import { GlobalStyles } from "./Global/GlobalStyles";
 
 function App() {
   return (
     <Router>
+      <GlobalStyles />
       <Header />
       <Switch>
         <Route path="/" exact>

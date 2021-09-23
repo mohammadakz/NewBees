@@ -212,6 +212,21 @@ const getCart = async (req, res) => {
   }
 };
 
+const deleteCart = async (req, res) => {
+  const _id = req.body.email;
+
+  try {
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    await db.collection("UsersCart").deleteOne({ email: _id });
+    sendResponse({ res, status: 200, data: user.items });
+    client.close();
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -221,4 +236,5 @@ module.exports = {
   getUserInfo,
   postCart,
   getCart,
+  deleteCart,
 };

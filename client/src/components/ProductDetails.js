@@ -38,40 +38,34 @@ const ProductDetails = ({ item }) => {
   return loading ? (
     "Loading..."
   ) : (
-    <Wrapper>
-      <ProductWrap key={productId}>
-        <Img src={productData.imageSrc} />
-        <Details>
-          <h2>{productData.name}</h2>
+    <ProductWrap key={productId}>
+      <Img src={productData.imageSrc} />
+      <Details>
+        <h2>{productData.name}</h2>
 
-          <p>{`${companyData.name} | ${companyData.country}`}</p>
-          <p>{`Category: ${productData.category}`}</p>
-          <p>{`Body Part: ${productData.body_location}`}</p>
-          <h3>{productData.price}</h3>
-          {productData.numInStock < 1 ? (
-            <p>Out of Stock</p>
-          ) : productData.numInStock < 11 ? (
-            <p>{`${productData.numInStock} in stock`}</p>
-          ) : (
-            ""
-          )}
-          <button onClick={() => addItemsToCart(productData)}>
-            ADD TO CARD
-          </button>
-        </Details>
-      </ProductWrap>
-    </Wrapper>
+        <p>{`${companyData.name} | ${companyData.country}`}</p>
+        <p>{`Category: ${productData.category}`}</p>
+        <p>{`Body Part: ${productData.body_location}`}</p>
+        <h3>{productData.price}</h3>
+        {productData.numInStock < 1 ? (
+          <p>Out of Stock</p>
+        ) : productData.numInStock < 11 ? (
+          <p>{`${productData.numInStock} in stock`}</p>
+        ) : (
+          ""
+        )}
+        <button onClick={() => addItemsToCart(productData)}>ADD TO CARD</button>
+      </Details>
+    </ProductWrap>
   );
 };
-const Wrapper = styled.div`
-  width: 100%;
-`;
 
 const ProductWrap = styled.div`
   display: flex;
   width: 75%;
   margin: 0 auto;
   background-color: #fafafa;
+  overflow: hidden;
 `;
 
 const Img = styled.img`
