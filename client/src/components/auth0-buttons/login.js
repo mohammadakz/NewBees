@@ -14,13 +14,15 @@ const LoginButton = () => {
 };
 
 const StyledButton = styled.button`
-  border: none;
+  width: 125px;
   background: none;
   font-size: 1.2rem;
-  padding: 1rem 2rem;
-  background-color: #438ea7;
-  border-radius: 1.2rem;
-  color: white;
+  padding: 12px 0;
+  background-color: #ffd750;
+  border: 2px solid #ffd750;
+  border-radius: 5px;
+  color: #fff;
+
   cursor: pointer;
   &:hover {
     background-color: lightgray;
