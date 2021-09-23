@@ -22,11 +22,11 @@ const StyledButton = styled.button`
   border: 2px solid #ffd750;
   border-radius: 5px;
   color: #fff;
+
   cursor: pointer;
   &:hover {
-    background-color: #fff;
-    color: #2f3437;
-    border: 2px solid #2f3437;
+    background-color: lightgray;
+    color: #438ea7;
     transition: 0.3s ease-in-out all;
   }
 `;

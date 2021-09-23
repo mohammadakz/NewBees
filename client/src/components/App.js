@@ -7,10 +7,13 @@ import Contact from "./Contact";
 import Cart from "./Cart";
 import Footer from "./Footer";
 import ProductDetails from "./ProductDetails";
+import ConfirmationPage from "./ConfirmationPage";
+import { GlobalStyles } from "./Global/GlobalStyles";
 
 function App() {
   return (
     <Router>
+      <GlobalStyles />
       <Header />
       <Switch>
         <Route path="/" exact>
@@ -24,6 +27,9 @@ function App() {
         </Route>
         <Route path="/cart">
           <Cart />
+        </Route>
+        <Route path="/confirmation">
+          <ConfirmationPage />
         </Route>
         <Route path="/products/:productId">
           <ProductDetails />

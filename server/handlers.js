@@ -112,9 +112,129 @@ const updateInventory = async (req, res) => {
   }
 };
 
+const postUserInfo = async (req, res) => {
+  try {
+    const { fullName, email, image } = req.body;
+    const _id = uuidv4();
+    const userInfo = {
+      _id,
+      fullName,
+      email,
+      image,
+    };
+
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const existingUser = await db
+      .collection("Usersinfo")
+      .findOne({ email: req.body.email });
+
+    if (existingUser === null) {
+      await db.collection("Usersinfo").insertOne(userInfo);
+      sendResponse({ res, status: 200, message: "user added to db" });
+
+      client.close();
+    } else {
+      sendResponse({ res, status: 300, message: "user already exists" });
+    }
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
+const getUserInfo = async (req, res) => {
+  try {
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const users = await db.collection("Usersinfo").find().toArray();
+    sendResponse({ res, status: 200, data: users });
+    client.close();
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
+const postCart = async (req, res) => {
+  try {
+    const { items, email } = req.body;
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const _id = uuidv4();
+
+    const usersCart = {
+      _id,
+      email,
+      items,
+    };
+
+    const existingCart = await db
+      .collection("UsersCart")
+      .findOne({ email: req.body.email });
+
+    if (existingCart === null) {
+      await db.collection("UsersCart").insertOne(usersCart);
+      sendResponse({ res, status: 200, message: "user's cart added" });
+      client.close();
+    } else {
+      const newCartItems = { $set: { items: usersCart.items } };
+      await db
+        .collection("UsersCart")
+        .updateOne({ email: req.body.email }, newCartItems);
+
+      sendResponse({ res, status: 200, message: "cart is updated now" });
+      client.close();
+    }
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
+const getCart = async (req, res) => {
+  try {
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const user = await db
+      .collection("UsersCart")
+      .findOne({ email: req.body.email });
+
+    if (user.email === req.body.email) {
+      sendResponse({ res, status: 200, data: user.items });
+    } else {
+      sendResponse({ res, status: 200, message: "nothing was found in db" });
+    }
+    client.close();
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
+const deleteCart = async (req, res) => {
+  const _id = req.body.email;
+
+  try {
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    await db.collection("UsersCart").deleteOne({ email: _id });
+    sendResponse({ res, status: 200, data: user.items });
+    client.close();
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   getCompanyById,
   updateInventory,
+  postUserInfo,
+  getUserInfo,
+  postCart,
+  getCart,
+  deleteCart,
 };

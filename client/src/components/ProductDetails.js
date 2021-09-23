@@ -85,15 +85,13 @@ const ProductDetails = ({ item }) => {
     </Wrapper>
   );
 };
-const Wrapper = styled.div`
-  width: 100%;
-`;
 
 const ProductWrap = styled.div`
   display: flex;
   width: 75%;
   margin: 0 auto;
   background-color: #fafafa;
+  overflow: hidden;
 `;
 
 const Img = styled.img`

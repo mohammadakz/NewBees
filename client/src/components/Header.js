@@ -13,6 +13,7 @@ const Header = () => {
         </Title>
         <Nav />
       </Container>
+      <Profile />
     </Wrapper>
   );
 };
@@ -24,8 +25,8 @@ const Home = styled(Link)`
 
 const Wrapper = styled.header`
   width: 100%;
-  heigth: 10vh;
   margin-bottom: 8vh;
+  height: 10vh;
   border-bottom: 1px solid #e5e5e5;
 `;
 
