@@ -58,6 +58,24 @@ const getProductById = async (req, res) => {
   }
 };
 
+const getProductsByCategory = async (req, res) => {
+  try {
+    const _id = req.params._id;
+    console.log(_id);
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const products = await db
+      .collection("Products")
+      .find({ $or: [{ category: _id }] })
+      .toArray();
+    client.close();
+    sendResponse({ res, status: 200, data: products });
+  } catch (err) {
+    sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
 const getCompanyById = async (req, res) => {
   try {
     const _id = Number(req.params._id);
@@ -260,6 +278,7 @@ module.exports = {
   getAllProducts,
   getProductById,
   getCompanyById,
+  getProductsByCategory,
   updateInventory,
   postUserInfo,
   getUserInfo,
