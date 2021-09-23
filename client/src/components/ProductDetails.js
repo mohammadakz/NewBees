@@ -85,6 +85,9 @@ const ProductDetails = ({ item }) => {
     </Wrapper>
   );
 };
+const Wrapper = styled.div`
+  width: 100%;
+`;
 
 const ProductWrap = styled.div`
   display: flex;

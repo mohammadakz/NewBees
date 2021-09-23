@@ -6,8 +6,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Checkout from "./Checkout";
 
 const Cart = () => {
-  const { cartItems, removeItemsFromCart, updateCart } =
-    useContext(CartContext);
+  const { cartItems, removeItemsFromCart, updateCart } = useContext(
+    CartContext
+  );
   const { user, isAuthenticated } = useAuth0();
   const [loading, setLoading] = useState(true);
 
@@ -16,10 +17,28 @@ const Cart = () => {
     setModal(!modal);
   };
 
+  //Updating user's cart in DB
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     fetch("/cartupdate", {
+  //       method: "POST",
+  //       body: JSON.stringify({ email: user.email, items: cartItems }),
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     // .then((res) => res.json())
+  //     // .then((data) => {
+  //     //   updateCart(data.data);
+  //     //   setLoading(false);
+  //     // });
+  //   }
+  // }, [cartItems]);
+
+  //Fetching user's cart from the DB
   useEffect(() => {
-    console.log(isAuthenticated);
     if (isAuthenticated) {
-      // console.log("hello");
       fetch("/getcart", {
         method: "POST",
         body: JSON.stringify({ email: user.email }),
@@ -36,6 +55,7 @@ const Cart = () => {
     }
   }, [isAuthenticated]);
 
+  //Storing user's cart in DB
   useEffect(() => {
     if (isAuthenticated) {
       const userData = {
@@ -82,7 +102,7 @@ const Cart = () => {
                 <img style={{ maxWidth: "10%" }} src={item.imageSrc} />
                 <h4>{item.name}</h4>
                 <h4>{item.price}</h4>
-                <button onClick={() => removeItemsFromCart(item.name[index])}>
+                <button onClick={() => removeItemsFromCart(index, cartItems)}>
                   REMOVE ITEM
                 </button>
               </ItemBox>

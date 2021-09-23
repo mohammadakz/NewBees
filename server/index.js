@@ -16,6 +16,8 @@ const {
   getUserInfo,
   getCart,
   postCart,
+  updateCart,
+  deleteCart,
 } = require("./handlers");
 
 const PORT = 4000;
@@ -49,6 +51,9 @@ express()
   //users cart endpoint
   .post("/getcart", getCart)
   .post("/cart", postCart)
+  //delete and update the cart
+  .put("/cartupdate", updateCart)
+  .delete("/checkout", deleteCart)
   // this is our catch all endpoint.
   .get("*", (req, res) => {
     res.status(404).json({
