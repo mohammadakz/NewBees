@@ -208,6 +208,31 @@ const getCart = async (req, res) => {
     }
     client.close();
   } catch (err) {
+    // sendResponse({ res, status: 400, message: err.message });
+  }
+};
+
+const updateCart = async (req, res) => {
+  try {
+    const client = new MongoClient(MONGO_URI, options);
+    await client.connect();
+    const db = client.db(dbName);
+    const exitingCart = await db
+      .collection("UsersCart")
+      .findOne({ email: req.body.email });
+
+    const updatedCart = { $set: { items: req.body.items } };
+    await db
+      .collection("UsersCart")
+      .updateOne({ email: req.body.email }, updatedCart);
+
+    sendResponse({
+      res,
+      status: 200,
+      message: "user's cart updated",
+    });
+    client.close();
+  } catch (err) {
     sendResponse({ res, status: 400, message: err.message });
   }
 };
@@ -220,7 +245,11 @@ const deleteCart = async (req, res) => {
     await client.connect();
     const db = client.db(dbName);
     await db.collection("UsersCart").deleteOne({ email: _id });
-    sendResponse({ res, status: 200, data: user.items });
+    sendResponse({
+      res,
+      status: 200,
+      message: "user's cart deleted",
+    });
     client.close();
   } catch (err) {
     sendResponse({ res, status: 400, message: err.message });
@@ -236,5 +265,6 @@ module.exports = {
   getUserInfo,
   postCart,
   getCart,
+  updateCart,
   deleteCart,
 };

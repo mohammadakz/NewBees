@@ -12,8 +12,10 @@ const CartReducer = (state, action) => {
     case remove_from_cart: {
       return {
         ...state,
+        // cartItems: state.cartItems.filter(
+        //   (item, index) => item.name[index] !== action.payload
         cartItems: state.cartItems.filter(
-          (item, index) => item.name[index] !== action.payload
+          (item) => state.cartItems.indexOf(item) !== action.payload
         ),
       };
     }
