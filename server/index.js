@@ -12,12 +12,13 @@ const {
   getProductById,
   getCompanyById,
   updateInventory,
-  postUserInfo,
   getUserInfo,
+  postUserInfo,
   getCart,
   postCart,
   updateCart,
   deleteCart,
+  getProductsByCategory,
 } = require("./handlers");
 
 const PORT = 4000;
@@ -54,6 +55,8 @@ express()
   //delete and update the cart
   .put("/cartupdate", updateCart)
   .delete("/checkout", deleteCart)
+
+  .get("/products/catogories/:_id", getProductsByCategory)
   // this is our catch all endpoint.
   .get("*", (req, res) => {
     res.status(404).json({

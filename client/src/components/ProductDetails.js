@@ -41,48 +41,44 @@ const ProductDetails = ({ item }) => {
   return loading ? (
     "Loading..."
   ) : (
-    <Wrapper>
-      <ProductWrap key={productId}>
-        <Img src={productData.imageSrc} />
-        <Container>
-          <Details>
-            <h2>{productData.name}</h2>
+    <ProductWrap key={productId}>
+      <Img src={productData.imageSrc} />
+      <Container>
+        <Details>
+          <h2>{productData.name}</h2>
 
-            <p>{`${companyData.name} | ${companyData.country}`}</p>
-            <p>{`Category: ${productData.category}`}</p>
-            <p>{`Body Part: ${productData.body_location}`}</p>
-            <h3>{productData.price}</h3>
-            {productData.numInStock < 1 ? (
-              <p>Out of Stock</p>
-            ) : productData.numInStock < 11 ? (
-              <p>{`${productData.numInStock} in stock`}</p>
-            ) : (
-              ""
-            )}
-          </Details>
-          <Quantity>
-            <Change
-              onClick={() =>
-                productData.numInStock > quantity && setQuantity(quantity + 1)
-              }
-            >
-              +
-            </Change>
-            <Number>{quantity}</Number>
-            <Change onClick={() => quantity > 1 && setQuantity(quantity - 1)}>
-              -
-            </Change>
-          </Quantity>
-          <Button
+          <p>{`${companyData.name} | ${companyData.country}`}</p>
+          <p>{`Category: ${productData.category}`}</p>
+          <p>{`Body Part: ${productData.body_location}`}</p>
+          <h3>{productData.price}</h3>
+          {productData.numInStock < 1 ? (
+            <p>Out of Stock</p>
+          ) : productData.numInStock < 11 ? (
+            <p>{`${productData.numInStock} in stock`}</p>
+          ) : (
+            ""
+          )}
+        </Details>
+        <Quantity>
+          <Change
             onClick={() =>
-              productData.numInStock && addItemsToCart(productData)
+              productData.numInStock > quantity && setQuantity(quantity + 1)
             }
           >
-            ADD TO CART
-          </Button>
-        </Container>
-      </ProductWrap>
-    </Wrapper>
+            +
+          </Change>
+          <Number>{quantity}</Number>
+          <Change onClick={() => quantity > 1 && setQuantity(quantity - 1)}>
+            -
+          </Change>
+        </Quantity>
+        <Button
+          onClick={() => productData.numInStock && addItemsToCart(productData)}
+        >
+          ADD TO CART
+        </Button>
+      </Container>
+    </ProductWrap>
   );
 };
 const Wrapper = styled.div`
