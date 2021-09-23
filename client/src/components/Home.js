@@ -2,15 +2,21 @@ import React, { useContext, useState } from "react";
 import ProductCard from "./ProductCard";
 import styled from "styled-components";
 import CartContext from "./Hooks/Cart/CartContext";
+import Category from "./CategoryCards";
+import { CategoryContext } from "./CategoryContext";
+import CategoryDisplay from "./CategoryDisplay";
+import CategoryCards from "./CategoryCards";
 
 const Home = () => {
   const { addItemsToCart, cartItems } = useContext(CartContext);
+  const { categorySelected, setCategorySelected, isSelected, setIsSelected } = React.useContext(CategoryContext);
 
   return (
     <>
       <Wrapper>
-        <ProductCard />
-      </Wrapper>
+          <CategoryCards />
+        {/*         <ProductCard />
+ */}      </Wrapper>
     </>
   );
 };

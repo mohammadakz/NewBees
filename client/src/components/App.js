@@ -34,6 +34,8 @@ function App() {
         <Route path="/products/:productId">
           <ProductDetails />
         </Route>
+          <Route path="/categories/:categoryId">
+        </Route>
       </Switch>
       <Footer />
     </Router>

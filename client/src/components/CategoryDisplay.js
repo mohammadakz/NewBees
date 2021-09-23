@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const CategoryCard = () => {
+const CategoryDisplay = () => {
   return <></>;
 };
 
-export default CategoryCard;
+export default CategoryDisplay;
