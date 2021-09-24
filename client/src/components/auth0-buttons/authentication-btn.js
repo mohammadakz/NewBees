@@ -8,32 +8,15 @@ const AuthenticationButton = () => {
   const { user, isAuthenticated } = useAuth0();
 
   return isAuthenticated ? (
-<<<<<<< Updated upstream
-    <Container>
-      <LogoutButton />
-      <Img src={user.picture} alt="" />
-    </Container>
-=======
     <StyledDiv>
       <LogoutButton />
       <Img src={user.picture} alt="" />
     </StyledDiv>
->>>>>>> Stashed changes
   ) : (
     <LoginButton />
   );
 };
 
-<<<<<<< Updated upstream
-const Container = styled.div`
-  position: relative;
-`;
-
-const Img = styled.img`
-  position: absolute;
-  top: 5px;
-  right: -75px;
-=======
 const StyledDiv = styled.div`
   display: flex;
   justify-content: space-between;
@@ -42,7 +25,6 @@ const StyledDiv = styled.div`
 const Img = styled.img`
   display: block;
   top: 22px;
->>>>>>> Stashed changes
   width: 50px;
   border-radius: 25px;
 `;

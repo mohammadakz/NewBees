@@ -22,7 +22,7 @@ const Nav = () => {
         <SearchBar />
         <StyledNav to="/cart">Cart</StyledNav>
 
-        {cartItems.length && <h3>{cartItems.length}</h3>}
+        {cartItems && <h3>{cartItems.length}</h3>}
         <AuthNav />
       </Navivation>
     </>
