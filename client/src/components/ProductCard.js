@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import CartContext from "./Hooks/Cart/CartContext";
-import PlusIcon from "../assets/plus_icon.svg";
-import MinusIcon from "../assets/minus_icon.svg";
 import loadingGif from "../assets/loading.gif";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -12,8 +10,6 @@ const ProductCard = () => {
 
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(0);
-  const [cart, setCart] = useState();
 
   const [page, setPage] = useState(1);
 
@@ -28,10 +24,6 @@ const ProductCard = () => {
     };
     fetchProductData();
   }, []);
-
-  // const updateCount = () => {
-  //   let updateAmount = cart.map(item => item.id === id ? item.)
-  // }
 
   return loading ? (
     <LoadingGif src={loadingGif} />
@@ -59,19 +51,19 @@ const ProductCard = () => {
               </ItemLink>
               <PriceAdd>
                 <h4>{item.price}</h4>
+
+                {/* {item.numInStock < 11 ? <p>Only {item.numInStock} left!</p> : null} */}
+
+                {item.numInStock > 0 ? (
+                  <AddButton onClick={() => addItemsToCart(item)}>
+                    Add to Cart
+                  </AddButton>
+                ) : (
+                  <AddButton onClick={() => addItemsToCart(item)} disabled>
+                    Out of Stock
+                  </AddButton>
+                )}
               </PriceAdd>
-
-              {/* {item.numInStock < 11 ? <p>Only {item.numInStock} left!</p> : null} */}
-
-              {item.numInStock > 0 ? (
-                <AddButton onClick={() => addItemsToCart(item)}>
-                  Add to Cart
-                </AddButton>
-              ) : (
-                <AddButton onClick={() => addItemsToCart(item)} disabled>
-                  Out of Stock
-                </AddButton>
-              )}
             </ProductWrap>
           </InfiniteScroll>
         );
@@ -90,7 +82,7 @@ const LoadingGif = styled.img`
 const ProductWrap = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fafafa;
+  background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   background-repeat: no-repeat;
   align-items: center;
@@ -122,32 +114,11 @@ const PriceAdd = styled.div`
   float: right;
 `;
 
-const IconWrap = styled.div`
-  display: flex;
-  width: 40%;
-  justify-content: space-between;
-`;
-
-const Plus = styled.img`
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.2);
-    filter: hue-rotate(125deg);
-  }
-`;
-const Minus = styled.img`
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.2);
-    filter: hue-rotate(125deg);
-  }
-`;
-
 const AddButton = styled.button`
   bottom: 0px;
   border-style: none;
   margin: 5% 0 5% 0;
-  width: 90%;
+  width: 50%;
   height: 4.5vh;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;

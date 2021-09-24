@@ -4,11 +4,11 @@ import CartContext from "./Hooks/Cart/CartContext";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import Checkout from "./Checkout";
+import removeIcon from "../assets/remove-icon.svg";
 
 const Cart = () => {
-  const { cartItems, removeItemsFromCart, updateCart } = useContext(
-    CartContext
-  );
+  const { cartItems, removeItemsFromCart, updateCart } =
+    useContext(CartContext);
   const { user, isAuthenticated } = useAuth0();
 
   const [modal, setModal] = useState(false);
@@ -76,56 +76,97 @@ const Cart = () => {
   // adding price sometimes gives more than 2 decialmals - this variable fixes that.
   let updatedCartPrice = Math.ceil(cartPrice * 100) / 100;
 
-  return;
-  <>
-    <Checkout modal={modal} setModal={setModal} cartPrice={updatedCartPrice} />
-    <Wrapper>
-      <ItemList>
-        {newState.map((item, index) => {
-          return (
-            <ItemBox key={item[index]} item={item}>
-              <img style={{ maxWidth: "10%" }} src={item.imageSrc} />
-              <h4>{item.name}</h4>
-              <h4>{item.price}</h4>
-              <span>
-                {Object.keys(uniqueItems).map((key) => {
-                  let count;
-                  if (key === `${item._id}`) {
-                    count = uniqueItems[item._id];
-                  }
-                  return count;
-                })}
-              </span>
-              <button onClick={() => removeItemsFromCart(index, cartItems)}>
-                REMOVE ITEM
-              </button>
-            </ItemBox>
-          );
-        })}
-      </ItemList>
-      <TotalWrap>
-        <CartTotal>
-          <TotalText>
-            <div>Total</div>${updatedCartPrice}
-          </TotalText>
-          <AddButton onClick={openModal}>Proceed to Checkout</AddButton>
-        </CartTotal>
-      </TotalWrap>
-    </Wrapper>
-  </>;
+  return (
+    <>
+      <Checkout
+        modal={modal}
+        setModal={setModal}
+        cartPrice={updatedCartPrice}
+      />
+      <Heading style={{ fontSize: "2em", display: "block" }}>Cart</Heading>
+      <Wrapper>
+        <ItemList>
+          {newState.map((item, index) => {
+            return (
+              <ItemBox key={item[index]} item={item}>
+                <ProductImg style={{ maxWidth: "10%" }} src={item.imageSrc} />
+                <h4>{item.name}</h4>
+                <h4>{item.price}</h4>
+                <span>
+                  {"Quantity: "}
+                  {Object.keys(uniqueItems).map((key) => {
+                    let count;
+                    if (key === `${item._id}`) {
+                      count = uniqueItems[item._id];
+                    }
+                    return count;
+                  })}
+                </span>
+                <Button onClick={() => removeItemsFromCart(index, cartItems)}>
+                  Delete Item
+                  <RemoveIcon src={removeIcon} />
+                </Button>
+              </ItemBox>
+            );
+          })}
+        </ItemList>
+        <TotalWrap>
+          <CartTotal>
+            <TotalText>
+              <div>Total</div>${updatedCartPrice}
+            </TotalText>
+            <AddButton onClick={openModal}>Proceed to Checkout</AddButton>
+          </CartTotal>
+        </TotalWrap>
+      </Wrapper>
+    </>
+  );
 };
 
-const Wrapper = styled.div`
+const Heading = styled.h2`
   width: 75%;
+  display: flex;
+  margin: auto;
+  text-align: left;
+  margin-bottom: 5vh;
+`;
+
+const RemoveIcon = styled.img`
+  width: 24px;
+  height: 24px;
+`;
+
+const Button = styled.button`
+  display: flex;
+  border: none;
+  border: 1px solid lightgray;
+  float: right;
+  margin-right: 5%;
+  padding: 1%;
+  justify-content: space-between;
+  width: 150px;
+  &:hover {
+    cursor: pointer;
+    background: lightcoral;
+    color: #fff;
+  }
+`;
+
+const Wrapper = styled.div`
+  width: 80%;
   display: flex;
   margin: auto;
 `;
 
+const ProductImg = styled.img`
+  border-radius: 20px;
+`;
+
 const ItemList = styled.ul`
-  width: 60%;
-  display: grid;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  grid-gap: 0.25rem;
+  width: 100%;
+  display: flex;
+  /* grid-template-rows: 1fr
+  grid-gap: 0.25rem; */
   margin: auto;
   list-style: none;
 `;
@@ -159,7 +200,8 @@ const TotalText = styled.div`
 
 const AddButton = styled.button`
   margin-top: 5%;
-  width: 200px;
+  min-width: 200px;
+  min-height: 50px;
   border-style: none;
   font-weight: bold;
   height: 4vh;
