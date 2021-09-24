@@ -23,22 +23,24 @@ const options = {
 const dbName = "E-commerce";
 
 const getAllProducts = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
   try {
-    const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
     const products = await db.collection("Products").find().toArray();
     client.close();
     sendResponse({ res, status: 200, data: products });
+    client.close();
   } catch (err) {
     sendResponse({ res, status: 400, message: err.message });
+    client.close();
   }
 };
 
 const getProductById = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
   try {
     const _id = Number(req.params._id);
-    const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
     db.collection("Products").findOne({ _id }, (err, result) => {
@@ -55,6 +57,7 @@ const getProductById = async (req, res) => {
   } catch (err) {
     console.log(err.stack);
     sendResponse({ res, status: 500, message: err.message, data: req.params });
+    client.close();
   }
 };
 
@@ -77,9 +80,10 @@ const getProductsByCategory = async (req, res) => {
 };
 
 const getCompanyById = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+
   try {
     const _id = Number(req.params._id);
-    const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
     db.collection("Companies").findOne({ _id }, (err, result) => {
@@ -96,14 +100,15 @@ const getCompanyById = async (req, res) => {
   } catch (err) {
     console.log(err.stack);
     sendResponse({ res, status: 500, message: err.message, data: req.params });
+    client.close();
   }
 };
 
 const updateInventory = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
   try {
     const _id = Number(req.params._id);
     const numPurchased = Number(req.body.numPurchased);
-    const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
     db.collection("Products").findOne({ _id }, async (err, result) => {
@@ -121,16 +126,18 @@ const updateInventory = async (req, res) => {
           $set: { numInStock: result.numInStock - numPurchased },
         };
         await db.collection("Products").updateOne(query, newValues);
-        client.close();
         sendResponse({ res, status: 200, ...newValues.$set, numPurchased });
+        client.close();
       }
     });
   } catch (err) {
     console.log(err.stack);
+    client.close();
   }
 };
 
 const postUserInfo = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
   try {
     const { fullName, email, image } = req.body;
     const _id = uuidv4();
@@ -141,7 +148,6 @@ const postUserInfo = async (req, res) => {
       image,
     };
 
-    const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
     const existingUser = await db
@@ -151,19 +157,20 @@ const postUserInfo = async (req, res) => {
     if (existingUser === null) {
       await db.collection("Usersinfo").insertOne(userInfo);
       sendResponse({ res, status: 200, message: "user added to db" });
-
       client.close();
     } else {
       sendResponse({ res, status: 300, message: "user already exists" });
+      client.close();
     }
   } catch (err) {
     sendResponse({ res, status: 400, message: err.message });
+    client.close();
   }
 };
 
 const getUserInfo = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
   try {
-    const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
     const users = await db.collection("Usersinfo").find().toArray();
@@ -171,16 +178,19 @@ const getUserInfo = async (req, res) => {
     client.close();
   } catch (err) {
     sendResponse({ res, status: 400, message: err.message });
+    client.close();
   }
 };
 
 const postCart = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
   try {
     const { items, email } = req.body;
-    const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
     const _id = uuidv4();
+    let itemCounter = 0;
+    //Counting the same items in the cart
 
     const usersCart = {
       _id,
@@ -207,12 +217,13 @@ const postCart = async (req, res) => {
     }
   } catch (err) {
     sendResponse({ res, status: 400, message: err.message });
+    client.close();
   }
 };
 
 const getCart = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
   try {
-    const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
     const user = await db
@@ -221,18 +232,21 @@ const getCart = async (req, res) => {
 
     if (user.email === req.body.email) {
       sendResponse({ res, status: 200, data: user.items });
+      client.close();
     } else {
       sendResponse({ res, status: 200, message: "nothing was found in db" });
+      client.close();
     }
     client.close();
   } catch (err) {
-    // sendResponse({ res, status: 400, message: err.message });
+    sendResponse({ res, status: 400, message: err.message });
+    client.close();
   }
 };
 
 const updateCart = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
   try {
-    const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
     const exitingCart = await db
@@ -252,14 +266,14 @@ const updateCart = async (req, res) => {
     client.close();
   } catch (err) {
     sendResponse({ res, status: 400, message: err.message });
+    client.close();
   }
 };
 
 const deleteCart = async (req, res) => {
-  const _id = req.body.email;
-
+  const client = new MongoClient(MONGO_URI, options);
   try {
-    const client = new MongoClient(MONGO_URI, options);
+    const _id = req.body.email;
     await client.connect();
     const db = client.db(dbName);
     await db.collection("UsersCart").deleteOne({ email: _id });
@@ -271,6 +285,7 @@ const deleteCart = async (req, res) => {
     client.close();
   } catch (err) {
     sendResponse({ res, status: 400, message: err.message });
+    client.close();
   }
 };
 

@@ -9,9 +9,32 @@ import Footer from "./Footer";
 import ProductDetails from "./ProductDetails";
 import ConfirmationPage from "./ConfirmationPage";
 import { GlobalStyles } from "./Global/GlobalStyles";
-import CategoryDisplay from "./CategoryDisplay";
+import { useAuth0 } from "@auth0/auth0-react";
+import CartContext from "./Hooks/Cart/CartContext";
 
 function App() {
+  const { cartItems, removeItemsFromCart, updateCart } = React.useContext(
+    CartContext
+  );
+  const { user, isAuthenticated } = useAuth0();
+  //Fetching user's cart from the DB
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      fetch("/getcart", {
+        method: "POST",
+        body: JSON.stringify({ email: user.email }),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          updateCart(data.data);
+          // setLoading(false);
+        });
+    }
+  }, [isAuthenticated]);
   return (
     <Router>
       <GlobalStyles />
@@ -20,26 +43,20 @@ function App() {
         <Route path="/" exact>
           <Home />
         </Route>
-        <Route exact path="/categories">
-          <CategoryCards />
-        </Route>
-        <Route path="/about">
+        <Route path="/about" exact>
           <About />
         </Route>
-        <Route path="/contact">
+        <Route path="/contact" exact>
           <Contact />
         </Route>
-        <Route path="/cart">
+        <Route path="/cart" exact>
           <Cart />
         </Route>
-        <Route path="/confirmation">
+        <Route path="/confirmation" exact>
           <ConfirmationPage />
         </Route>
-        <Route path="/products/:productId">
+        <Route path="/products/:productId" exact>
           <ProductDetails />
-        </Route>
-        <Route path="/categories/:categoryId">
-          <CategoryDisplay />
         </Route>
       </Switch>
       <Footer />
