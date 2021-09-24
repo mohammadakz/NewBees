@@ -4,13 +4,13 @@ import styled from "styled-components";
 import Nav from "./Nav";
 import Profile from "./Profile";
 
-const Header = () => {
+const Header = ({ setU }) => {
   return (
     <Wrapper>
       <Container>
         <Nav />
       </Container>
-      <Profile />
+      <Profile setU={setU} />
     </Wrapper>
   );
 };

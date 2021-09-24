@@ -20,6 +20,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   const { user, isAuthenticated } = useAuth0();
+
   //Fetching user's cart from the DB
   React.useEffect(() => {
     if (isAuthenticated) {
