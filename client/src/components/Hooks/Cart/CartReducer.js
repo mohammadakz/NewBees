@@ -10,7 +10,6 @@ const CartReducer = (state, action) => {
     }
 
     case remove_from_cart: {
-      console.log(action, "action");
       const filteredCart = action.newState.filter((item, index) => {
         return index !== action.payload + action.counter - 1;
       });

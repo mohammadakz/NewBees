@@ -93,7 +93,7 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   display: flex;
-  justify-content: 
+  justify-content: center;
   align-content: space-around;
   flex-wrap: wrap;
   width: 75%;

@@ -15,7 +15,6 @@ const companies = require("./data/companies.json");
 //Import info to the databse (mongodb)
 const batchImport = async () => {
   // creates a new client
-  console.log(MONGO_URI);
   const client = await new MongoClient(MONGO_URI, options);
 
   // connect to the client
