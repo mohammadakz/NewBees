@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const SearchBar = () => {
-  return <Search type="text" placeholder="Search" />;
+  return <Search type="text" placeholder="Not working! (╯°□°）╯︵ ┻━┻" />;
 };
 
 const Search = styled.input`
