@@ -64,6 +64,7 @@ const getProductById = async (req, res) => {
 const getProductsByCategory = async (req, res) => {
   try {
     const _id = req.params._id;
+    // _id = _id.charAt(0).toUpperCase() + _id.slice(1);
     const client = new MongoClient(MONGO_URI, options);
     await client.connect();
     const db = client.db(dbName);
@@ -75,6 +76,7 @@ const getProductsByCategory = async (req, res) => {
     sendResponse({ res, status: 200, data: products });
   } catch (err) {
     sendResponse({ res, status: 400, message: err.message });
+    client.close();
   }
 };
 
