@@ -1,28 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navlink } from "react-router-dom";
 import styled from "styled-components";
 import { useParams } from "react-router";
-import PlusIcon from "../assets/plus_icon.svg";
-import MinusIcon from "../assets/minus_icon.svg";
 import loadingGif from "../assets/loading.gif";
 import CartContext from "./Hooks/Cart/CartContext";
+import SubNav from "./SubNav";
 
 const CategoryDisplay = () => {
   const { categoryId } = useParams();
   const { addItemsToCart, cartItems } = React.useContext(CartContext);
   const [categoryData, setCategoryData] = React.useState();
-  const [loaded, setLoaded] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [quantity, setQuantity] = React.useState(0);
   const [page, setPage] = React.useState(1);
 
   React.useEffect(() => {
-    fetch(`/products/categories/${categoryId}`)
-      .then(res => res.json())
-      .then(data => {
+    fetch(`/categories/${categoryId}`)
+      .then((res) => res.json())
+      .then((data) => {
         setCategoryData(data.data);
-        setLoaded(true);
-      })
-  }, [])
+        setLoading(false);
+      });
+  }, [categoryId]);
   // to increase number of item
   const incrementItem = () => {
     setQuantity(quantity + 1);
@@ -37,63 +36,69 @@ const CategoryDisplay = () => {
     }
   };
 
-  return !loaded ? (
-    <LoadingGif src={loadingGif} />
+  return loading ? (
+    <LoadingWrapper>
+      <LoadingGif src={loadingGif} />
+    </LoadingWrapper>
   ) : (
     <Wrapper>
-      {categoryData.map((item) => {
-        return (
-          <ProductWrap key={item.name}>
-            <ItemLink to={`/products/${item._id}`}>
-              <Img style={{ backgroundImage: `url(${item.imageSrc})` }} />
-              <ProductContent>
-                <h5>{item.name}</h5>
-              </ProductContent>
-            </ItemLink>
-            <PriceAddRemove>
-              <h4>{item.price}</h4>
+      <SubNav />
+      <Container>
+        {categoryData.map((item) => {
+          return (
+            <ProductWrap key={item.name}>
+              <ItemLink to={`/products/${item._id}`}>
+                <Img style={{ backgroundImage: `url(${item.imageSrc})` }}></Img>
+                <ProductContent>
+                  <h5>{item.name}</h5>
+                </ProductContent>
+              </ItemLink>
+              <PriceAddRemove>
+                <h4>{item.price}</h4>
+              </PriceAddRemove>
+
+              {/* {item.numInStock < 11 ? <p>Only {item.numInStock} left!</p> : null} */}
+
               {item.numInStock > 0 ? (
-                <IconWrap>
-                  <Minus src={MinusIcon} onClick={() => decrementItem(item)} />
-                  <div>{quantity}</div>
-                  <Plus src={PlusIcon} onClick={() => incrementItem(item)} />
-                </IconWrap>
-              ) : null}
-            </PriceAddRemove>
-
-            {/* {item.numInStock < 11 ? <p>Only {item.numInStock} left!</p> : null} */}
-
-            {item.numInStock > 0 ? (
-              <AddButton onClick={() => addItemsToCart(item)}>
-                Add to Cart
-              </AddButton>
-            ) : (
-              <AddButton onClick={() => addItemsToCart(item)} disabled>
-                Out of Stock
-              </AddButton>
-            )}
-          </ProductWrap>
-        );
-      })}
+                <AddButton onClick={() => addItemsToCart(item)}>
+                  Add to Cart
+                </AddButton>
+              ) : (
+                <AddButton onClick={() => addItemsToCart(item)} disabled>
+                  Out of Stock
+                </AddButton>
+              )}
+            </ProductWrap>
+          );
+        })}
+      </Container>
     </Wrapper>
   );
 };
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
 
 const LoadingGif = styled.img`
-  margin: auto;
-  width: 20%;
-  justify-content: center;
-  align-items: center;
+  margin: 15% auto;
+  width: 75px;
 `;
 
 const Wrapper = styled.div`
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+`;
 
+const Container = styled.div`
+  display: flex;
+  justify-content: 
+  align-content: space-around;
+  flex-wrap: wrap;
+  width: 75%;
+  margin: 0 auto;
+  margin-top: 50px;
 `;
 
 const ProductWrap = styled.div`
@@ -104,7 +109,9 @@ const ProductWrap = styled.div`
   background-repeat: no-repeat;
   align-items: center;
   position: relative;
-  width: 25%;
+  width: 31.2%;
+  margin: 0 1%;
+  margin-bottom: 25px;
 `;
 
 const ItemLink = styled(Link)`
@@ -122,6 +129,7 @@ const Img = styled.div`
 
 const ProductContent = styled.div`
   padding: 3%;
+  height: 100px;
 `;
 
 const PriceAddRemove = styled.div`
@@ -130,27 +138,6 @@ const PriceAddRemove = styled.div`
   justify-content: space-between;
   align-items: center;
   float: right;
-`;
-
-const IconWrap = styled.div`
-  display: flex;
-  width: 40%;
-  justify-content: space-between;
-`;
-
-const Plus = styled.img`
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.2);
-    filter: hue-rotate(125deg);
-  }
-`;
-const Minus = styled.img`
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.2);
-    filter: hue-rotate(125deg);
-  }
 `;
 
 const AddButton = styled.button`
@@ -178,6 +165,5 @@ const AddButton = styled.button`
     }
   }
 `;
-
 
 export default CategoryDisplay;

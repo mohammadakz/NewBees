@@ -11,6 +11,7 @@ import ConfirmationPage from "./ConfirmationPage";
 import { GlobalStyles } from "./Global/GlobalStyles";
 import { useAuth0 } from "@auth0/auth0-react";
 import CartContext from "./Hooks/Cart/CartContext";
+import CategoryDisplay from "./CategoryDisplay";
 
 function App() {
   const { cartItems, removeItemsFromCart, updateCart } =
@@ -53,6 +54,9 @@ function App() {
         </Route>
         <Route path="/cart" exact>
           <Cart />
+        </Route>
+        <Route path="/categories/:categoryId" exact>
+          <CategoryDisplay />
         </Route>
         <Route path="/confirmation" exact>
           <ConfirmationPage />
