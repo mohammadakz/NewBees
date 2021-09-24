@@ -6,53 +6,48 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Checkout from "./Checkout";
 
 const Cart = () => {
-  const { cartItems, removeItemsFromCart, updateCart } =
-    useContext(CartContext);
+  const { cartItems, removeItemsFromCart, updateCart } = useContext(
+    CartContext
+  );
   const { user, isAuthenticated } = useAuth0();
-  const [loading, setLoading] = useState(true);
 
   const [modal, setModal] = useState(false);
   const openModal = () => {
     setModal(!modal);
   };
 
-  //Updating user's cart in DB
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     fetch("/cartupdate", {
-  //       method: "POST",
-  //       body: JSON.stringify({ email: user.email, items: cartItems }),
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     // .then((res) => res.json())
-  //     // .then((data) => {
-  //     //   updateCart(data.data);
-  //     //   setLoading(false);
-  //     // });
-  //   }
-  // }, [cartItems]);
-
-  //Fetching user's cart from the DB
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetch("/getcart", {
-        method: "POST",
-        body: JSON.stringify({ email: user.email }),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          updateCart(data.data);
-          setLoading(false);
-        });
+  // helper function counting items
+  function mostFrequentElement(arr) {
+    const itemCount = {};
+    for (let x of arr) {
+      if (Object.keys(itemCount).includes(`${x._id}`)) {
+        itemCount[x._id] += 1;
+      } else {
+        itemCount[x._id] = 1;
+      }
     }
-  }, [isAuthenticated]);
+
+    let res = [];
+    for (let x of arr) {
+      let count = 0;
+      for (let i of arr) {
+        if (i._id === x._id) {
+          count++;
+          res.push({ id: i._id });
+        }
+      }
+    }
+
+    return itemCount;
+  }
+  const uniqueItems = mostFrequentElement(cartItems);
+
+  //Copying the state
+  const newS = [...cartItems];
+  // getting unique items
+  const uniq = new Set(newS.map((e) => JSON.stringify(e)));
+  // unique items in state
+  const newState = Array.from(uniq).map((e) => JSON.parse(e));
 
   //Storing user's cart in DB
   useEffect(() => {
@@ -61,8 +56,6 @@ const Cart = () => {
         email: user.email,
         items: cartItems,
       };
-      setLoading(true);
-
       fetch("/cart", {
         method: "POST",
         body: JSON.stringify(userData),
@@ -71,7 +64,6 @@ const Cart = () => {
           "Content-Type": "application/json",
         },
       });
-      setLoading(false);
     }
   }, []);
 
@@ -84,41 +76,43 @@ const Cart = () => {
   // adding price sometimes gives more than 2 decialmals - this variable fixes that.
   let updatedCartPrice = Math.ceil(cartPrice * 100) / 100;
 
-  return loading ? (
-    "Loading..."
-  ) : (
-    <>
-      <Checkout
-        modal={modal}
-        setModal={setModal}
-        cartPrice={updatedCartPrice}
-      />
-      <Wrapper>
-        <ItemList>
-          {cartItems.map((item, index) => {
-            return (
-              <ItemBox key={item[index]} item={item}>
-                <img style={{ maxWidth: "10%" }} src={item.imageSrc} />
-                <h4>{item.name}</h4>
-                <h4>{item.price}</h4>
-                <button onClick={() => removeItemsFromCart(index, cartItems)}>
-                  REMOVE ITEM
-                </button>
-              </ItemBox>
-            );
-          })}
-        </ItemList>
-        <TotalWrap>
-          <CartTotal>
-            <TotalText>
-              <div>Total</div>${updatedCartPrice}
-            </TotalText>
-            <AddButton onClick={openModal}>Proceed to Checkout</AddButton>
-          </CartTotal>
-        </TotalWrap>
-      </Wrapper>
-    </>
-  );
+  return;
+  <>
+    <Checkout modal={modal} setModal={setModal} cartPrice={updatedCartPrice} />
+    <Wrapper>
+      <ItemList>
+        {newState.map((item, index) => {
+          return (
+            <ItemBox key={item[index]} item={item}>
+              <img style={{ maxWidth: "10%" }} src={item.imageSrc} />
+              <h4>{item.name}</h4>
+              <h4>{item.price}</h4>
+              <span>
+                {Object.keys(uniqueItems).map((key) => {
+                  let count;
+                  if (key === `${item._id}`) {
+                    count = uniqueItems[item._id];
+                  }
+                  return count;
+                })}
+              </span>
+              <button onClick={() => removeItemsFromCart(index, cartItems)}>
+                REMOVE ITEM
+              </button>
+            </ItemBox>
+          );
+        })}
+      </ItemList>
+      <TotalWrap>
+        <CartTotal>
+          <TotalText>
+            <div>Total</div>${updatedCartPrice}
+          </TotalText>
+          <AddButton onClick={openModal}>Proceed to Checkout</AddButton>
+        </CartTotal>
+      </TotalWrap>
+    </Wrapper>
+  </>;
 };
 
 const Wrapper = styled.div`
@@ -139,6 +133,9 @@ const ItemList = styled.ul`
 const ItemBox = styled.li`
   width: 100%;
   border-bottom: 1px solid lightgray;
+  span {
+    padding-right: 2rem;
+  }
 `;
 
 const CartTotal = styled.div`
