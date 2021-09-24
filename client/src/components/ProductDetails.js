@@ -59,19 +59,6 @@ const ProductDetails = ({ item }) => {
             ""
           )}
         </Details>
-        <Quantity>
-          <Change
-            onClick={() =>
-              productData.numInStock > quantity && setQuantity(quantity + 1)
-            }
-          >
-            +
-          </Change>
-          <Number>{quantity}</Number>
-          <Change onClick={() => quantity > 1 && setQuantity(quantity - 1)}>
-            -
-          </Change>
-        </Quantity>
         <Button
           onClick={() => productData.numInStock && addItemsToCart(productData)}
         >
@@ -108,28 +95,6 @@ const Details = styled.div`
   font-family: sans-serif;
 `;
 
-const Change = styled.span`
-  padding: 5px 10px;
-  font-size: 1.6em;
-  font-weight: bold;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-const Number = styled.span`
-  padding: 10px;
-  font-size: 1.4em;
-  font-weight: bold;
-  font-family: sans-serif;
-`;
-const Quantity = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 25px 0;
-`;
-
 const Button = styled.button`
   font-weight: bold;
   margin: 0 10%;
@@ -142,6 +107,7 @@ const Button = styled.button`
 
   &:hover {
     cursor: pointer;
+    background-color: #ffd750;
   }
 
   &:active {

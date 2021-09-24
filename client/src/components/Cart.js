@@ -174,8 +174,7 @@ const ProductImg = styled.img`
 const ItemList = styled.ul`
   width: 100%;
   display: flex;
-  /* grid-template-rows: 1fr
-  grid-gap: 0.25rem; */
+  flex-direction: column;
   margin: auto;
   list-style: none;
 `;
