@@ -10,13 +10,13 @@ const CartReducer = (state, action) => {
     }
 
     case remove_from_cart: {
+      console.log(action, "action");
+      const filteredCart = action.newState.filter((item, index) => {
+        return index !== action.payload + action.counter - 1;
+      });
       return {
         ...state,
-        // cartItems: state.cartItems.filter(
-        //   (item, index) => item.name[index] !== action.payload
-        cartItems: state.cartItems.filter(
-          (item) => state.cartItems.indexOf(item) !== action.payload
-        ),
+        cartItems: filteredCart,
       };
     }
     case updateCartDb: {

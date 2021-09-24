@@ -7,8 +7,8 @@ import Checkout from "./Checkout";
 import removeIcon from "../assets/remove-icon.svg";
 
 const Cart = () => {
-  const { cartItems, removeItemsFromCart, updateCart } =
-    useContext(CartContext);
+  const { cartItems, removeItemsFromCart } = useContext(CartContext);
+
   const { user, isAuthenticated } = useAuth0();
 
   const [modal, setModal] = useState(false);
@@ -18,6 +18,7 @@ const Cart = () => {
 
   // helper function counting items
   function mostFrequentElement(arr) {
+    // console.log("arr", arr);
     const itemCount = {};
     for (let x of arr) {
       if (Object.keys(itemCount).includes(`${x._id}`)) {
@@ -26,28 +27,39 @@ const Cart = () => {
         itemCount[x._id] = 1;
       }
     }
-
-    let res = [];
-    for (let x of arr) {
-      let count = 0;
-      for (let i of arr) {
-        if (i._id === x._id) {
-          count++;
-          res.push({ id: i._id });
-        }
-      }
-    }
+    // let res = [];
+    // for (let x of arr) {
+    //   let count = 0;
+    //   for (let i of arr) {
+    //     if (i._id === x._id) {
+    //       count++;
+    //       res.push({ id: i._id });
+    //     }
+    //   }
+    // }
 
     return itemCount;
   }
-  const uniqueItems = mostFrequentElement(cartItems);
+  const uniqueItems = mostFrequentElement(cartItems); //object
+
+  //immutable update
+  const copyState = [...cartItems];
+  copyState.forEach((item, index) => {
+    Object.keys(uniqueItems).forEach((key) => {
+      if (Number(key) === item._id) {
+        copyState[index] = { ...copyState[index], counter: uniqueItems[key] };
+      }
+    });
+  });
 
   //Copying the state
-  const newS = [...cartItems];
+  const newS = [...copyState];
   // getting unique items
   const uniq = new Set(newS.map((e) => JSON.stringify(e)));
   // unique items in state
   const newState = Array.from(uniq).map((e) => JSON.parse(e));
+  // console.log("uniqueItems", uniqueItems);
+  // console.log("copyState", cartItems);
 
   //Storing user's cart in DB
   useEffect(() => {
@@ -76,6 +88,7 @@ const Cart = () => {
   // adding price sometimes gives more than 2 decialmals - this variable fixes that.
   let updatedCartPrice = Math.ceil(cartPrice * 100) / 100;
 
+  // console.log(newState, "newstate cartjs");
   return (
     <>
       <Checkout
@@ -88,21 +101,17 @@ const Cart = () => {
         <ItemList>
           {newState.map((item, index) => {
             return (
-              <ItemBox key={item[index]} item={item}>
+              <ItemBox key={index} item={item}>
                 <ProductImg style={{ maxWidth: "10%" }} src={item.imageSrc} />
                 <h4>{item.name}</h4>
                 <h4>{item.price}</h4>
-                <span>
-                  {"Quantity: "}
-                  {Object.keys(uniqueItems).map((key) => {
-                    let count;
-                    if (key === `${item._id}`) {
-                      count = uniqueItems[item._id];
-                    }
-                    return count;
-                  })}
-                </span>
-                <Button onClick={() => removeItemsFromCart(index, cartItems)}>
+                <span>{item.counter}</span>
+                <Button
+                  onClick={
+                    () => removeItemsFromCart(cartItems, index, item.counter)
+                    // removeItemsFromCart(copyState, item._id)
+                  }
+                >
                   Delete Item
                   <RemoveIcon src={removeIcon} />
                 </Button>

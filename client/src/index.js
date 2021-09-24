@@ -8,15 +8,13 @@ import { CategoryProvider } from "./components/CategoryContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <CategoryProvider>
-        <Auth0ProviderWithHistory>
-          <CartState>
-            <App />
-          </CartState>
-        </Auth0ProviderWithHistory>
-      </CategoryProvider>
-    </Router>
+    <CategoryProvider>
+      <Auth0ProviderWithHistory>
+        <CartState>
+          <App />
+        </CartState>
+      </Auth0ProviderWithHistory>
+    </CategoryProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

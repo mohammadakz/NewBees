@@ -14,8 +14,9 @@ import CartContext from "./Hooks/Cart/CartContext";
 import CategoryDisplay from "./CategoryDisplay";
 
 function App() {
-  const { cartItems, removeItemsFromCart, updateCart } =
-    useContext(CartContext);
+  const { cartItems, removeItemsFromCart, updateCart } = useContext(
+    CartContext
+  );
   const [loading, setLoading] = useState(true);
 
   const { user, isAuthenticated } = useAuth0();
