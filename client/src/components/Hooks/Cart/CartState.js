@@ -20,17 +20,26 @@ const CartState = ({ children }) => {
   const addItemsToCart = (item) => {
     dispatch({ type: add_to_cart, payload: item });
   };
+  //Rony
+  const removeItemsFromCart = (newState, index, counter) => {
+    dispatch({
+      type: remove_from_cart,
+      payload: index,
+      newState,
+      counter,
+    });
 
-  const removeItemsFromCart = (id, items) => {
-    console.log("testing", items);
-    dispatch({ type: remove_from_cart, payload: id });
+    const filteredCart = newState.filter((item, index) => {
+      return index !== index + counter - 1;
+    });
+
     // This fetch updates the items in the cart accordingly
     if (isAuthenticated) {
       fetch("/cartupdate", {
         method: "PUT",
         body: JSON.stringify({
           email: user.email,
-          items: items.filter((item) => items.indexOf(item) !== id),
+          items: filteredCart,
         }),
         headers: {
           Accept: "application/json",
