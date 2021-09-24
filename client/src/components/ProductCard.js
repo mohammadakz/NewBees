@@ -26,7 +26,9 @@ const ProductCard = () => {
   }, []);
 
   return loading ? (
-    <LoadingGif src={loadingGif} />
+    <LoadingWrapper>
+      <LoadingGif src={loadingGif} />
+    </LoadingWrapper>
   ) : (
     <>
       {productData.map((item) => {
@@ -71,12 +73,18 @@ const ProductCard = () => {
     </>
   );
 };
+const LoadingWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
 
 const LoadingGif = styled.img`
-  margin: auto;
-  width: 20%;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+  top: 50px;
+  left: 33vw;
+  width: 75px;
 `;
 
 const ProductWrap = styled.div`
@@ -104,6 +112,7 @@ const Img = styled.div`
 
 const ProductContent = styled.div`
   padding: 3%;
+  height: 100px;
 `;
 
 const PriceAdd = styled.div`

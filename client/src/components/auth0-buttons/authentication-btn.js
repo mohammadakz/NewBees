@@ -8,19 +8,23 @@ const AuthenticationButton = () => {
   const { user, isAuthenticated } = useAuth0();
 
   return isAuthenticated ? (
-    <div>
+    <Container>
       <LogoutButton />
       <Img src={user.picture} alt="" />
-    </div>
+    </Container>
   ) : (
     <LoginButton />
   );
 };
+
+const Container = styled.div`
+  position: relative;
+`;
+
 const Img = styled.img`
-  display: block;
-  top: 22px;
-  right: 150px;
   position: absolute;
+  top: 5px;
+  right: -75px;
   width: 50px;
   border-radius: 25px;
 `;

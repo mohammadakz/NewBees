@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import ProductCard from "./ProductCard";
 import styled from "styled-components";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Hero from "../assets/Hero_Pics/hero.png";
+import SubNav from "./SubNav";
 
 const Home = () => {
   return (
@@ -17,15 +18,7 @@ const Home = () => {
         <HeroPic src={Hero} />
       </HeroWrap>
       <br />
-      <SubNav>
-        <SubNavLink to={"/categories"}>Entertainment</SubNavLink>
-        <SubNavLink to={"/categories"}>Fitness</SubNavLink>
-        <SubNavLink to={"/categories"}>Gaming</SubNavLink>
-        <SubNavLink to={"/categories"}>Industrial</SubNavLink>
-        <SubNavLink to={"/categories"}>Lifestyle</SubNavLink>
-        <SubNavLink to={"/categories"}>Medical</SubNavLink>
-        <SubNavLink to={"/"}>All Products</SubNavLink>
-      </SubNav>
+      <SubNav />
       <br />
       <Wrapper>
         <ProductCard />
@@ -76,33 +69,4 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const SubNav = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding-top: 1%;
-  text-decoration: none;
-  margin: 0 auto 0 auto;
-  max-width: 75%;
-  height: 4vh;
-  font-size: 0.9em;
-  justify-content: space-evenly;
-  position: sticky;
-  top: 5vh;
-  background-color: #eaeded;
-  z-index: 999;
-  align-items: center;
-`;
-
-const SubNavLink = styled(NavLink)`
-  text-decoration: none;
-  color: #000;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  &.active {
-    font-weight: bold;
-  }
-`;
 export default Home;
