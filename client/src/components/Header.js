@@ -8,9 +8,6 @@ const Header = () => {
   return (
     <Wrapper>
       <Container>
-        <Title>
-          <Home to="/">New Bees</Home>
-        </Title>
         <Nav />
       </Container>
       <Profile />
@@ -18,23 +15,22 @@ const Header = () => {
   );
 };
 
-const Home = styled(Link)`
-  text-decoration: none;
-  color: #ffd750;
-`;
-
 const Wrapper = styled.header`
   width: 100%;
-  margin-bottom: 8vh;
-  height: 10vh;
+  margin-bottom: 3%;
   border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0px;
+  background-color: #eaeded;
+  z-index: 9999;
 `;
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   font-family: sans-serif;
-  width: 75%;
+  width: 80%;
+  padding: 0 3% 0 3%;
   margin: 0 auto;
 `;
 

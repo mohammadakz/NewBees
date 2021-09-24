@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import Header from "./Header";
 import Home from "./Home";
@@ -13,9 +13,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import CartContext from "./Hooks/Cart/CartContext";
 
 function App() {
-  const { cartItems, removeItemsFromCart, updateCart } = React.useContext(
-    CartContext
-  );
+  const { cartItems, removeItemsFromCart, updateCart } =
+    useContext(CartContext);
+  const [loading, setLoading] = useState(true);
+
   const { user, isAuthenticated } = useAuth0();
   //Fetching user's cart from the DB
   React.useEffect(() => {
@@ -31,10 +32,11 @@ function App() {
         .then((res) => res.json())
         .then((data) => {
           updateCart(data.data);
-          // setLoading(false);
+          setLoading(false);
         });
     }
   }, [isAuthenticated]);
+
   return (
     <Router>
       <GlobalStyles />
