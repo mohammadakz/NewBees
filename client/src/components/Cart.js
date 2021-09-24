@@ -18,7 +18,6 @@ const Cart = () => {
 
   // helper function counting items
   function mostFrequentElement(arr) {
-    // console.log("arr", arr);
     const itemCount = {};
     for (let x of arr) {
       if (Object.keys(itemCount).includes(`${x._id}`)) {
@@ -27,16 +26,6 @@ const Cart = () => {
         itemCount[x._id] = 1;
       }
     }
-    // let res = [];
-    // for (let x of arr) {
-    //   let count = 0;
-    //   for (let i of arr) {
-    //     if (i._id === x._id) {
-    //       count++;
-    //       res.push({ id: i._id });
-    //     }
-    //   }
-    // }
 
     return itemCount;
   }
@@ -58,8 +47,6 @@ const Cart = () => {
   const uniq = new Set(newS.map((e) => JSON.stringify(e)));
   // unique items in state
   const newState = Array.from(uniq).map((e) => JSON.parse(e));
-  // console.log("uniqueItems", uniqueItems);
-  // console.log("copyState", cartItems);
 
   //Storing user's cart in DB
   useEffect(() => {
@@ -88,7 +75,6 @@ const Cart = () => {
   // adding price sometimes gives more than 2 decialmals - this variable fixes that.
   let updatedCartPrice = Math.ceil(cartPrice * 100) / 100;
 
-  // console.log(newState, "newstate cartjs");
   return (
     <>
       <Checkout
@@ -107,9 +93,8 @@ const Cart = () => {
                 <h4>{item.price}</h4>
                 <span>{item.counter}</span>
                 <Button
-                  onClick={
-                    () => removeItemsFromCart(cartItems, index, item.counter)
-                    // removeItemsFromCart(copyState, item._id)
+                  onClick={() =>
+                    removeItemsFromCart(cartItems, index, item.counter)
                   }
                 >
                   Delete Item

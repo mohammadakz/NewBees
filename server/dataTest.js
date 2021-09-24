@@ -4,8 +4,7 @@ const companies = require('./data/companies.json');
 const items = require('./data/items.json');
 
 const refItems = items.filter((item) => typeof item.price === 'string');
-console.log(refItems.length);
-console.log(items.length);
+
 
 
 

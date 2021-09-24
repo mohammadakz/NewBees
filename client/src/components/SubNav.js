@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const SubNav = () => {
@@ -34,6 +34,9 @@ const SubNavigation = styled.div`
 `;
 
 const SubNavLink = styled(NavLink)`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 2% 0 2%;
   text-decoration: none;
   color: #000;
 
@@ -42,7 +45,7 @@ const SubNavLink = styled(NavLink)`
   }
 
   &.active {
-    font-weight: bold;
+    /* font-weight: bold; */
   }
 `;
 

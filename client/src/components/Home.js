@@ -52,7 +52,8 @@ const FeatureLink = styled(Link)`
 
 const HeroPic = styled.img`
   display: flex;
-  width: 20%;
+  width: 22%;
+
   margin-left: auto;
   margin-right: 15%;
 `;

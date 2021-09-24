@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 import styled from "styled-components";
 import CartContext from "./Hooks/Cart/CartContext";
@@ -20,8 +21,9 @@ const Checkout = ({ modal, setModal }) => {
     transform: modal ? `translateY(0%)` : `translateY(100%)`,
   });
 
-  const { cartItems, removeItemsFromCart, updateCart } =
-    useContext(CartContext);
+  const { cartItems, removeItemsFromCart, updateCart } = useContext(
+    CartContext
+  );
 
   const cartPrice = cartItems.reduce(
     (amt, item) => +item.price.replace("$", "") + amt,
@@ -42,7 +44,7 @@ const Checkout = ({ modal, setModal }) => {
                 <Input type="number" placeholder="Credit Card Number"></Input>
                 <div>Total</div>
                 <div>${updatedCartPrice}</div>
-                <AddButton>Checkout</AddButton>
+                <AddButton to="/confirmation">Checkout</AddButton>
               </Form>
             </Wrapper>
           </animated.div>
@@ -95,7 +97,7 @@ const Input = styled.input`
   }
 `;
 
-const AddButton = styled.button`
+const AddButton = styled(Link)`
   margin-top: 5%;
   width: 250px;
   border-style: none;
@@ -106,6 +108,9 @@ const AddButton = styled.button`
   cursor: pointer;
   z-index: 100;
   border-radius: 11px;
+  text-decoration: none;
+  color: black;
+  padding: 1.5rem;
   &:hover {
     background-color: orange;
   }

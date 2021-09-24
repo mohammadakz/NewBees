@@ -18,7 +18,6 @@ const ProductCard = () => {
       const res = await fetch(`/products`);
 
       const data = await res.json();
-      console.log(data);
       setProductData(data.data);
       setLoading(false);
     };
@@ -34,6 +33,7 @@ const ProductCard = () => {
       {productData.map((item) => {
         return (
           <InfiniteScroll
+            key={Math.floor(Math.random() * 10000000)}
             dataLength={productData.length} //This is important field to render the next data
             next={() => setPage(page + 1)}
             hasMore={true}
@@ -107,7 +107,7 @@ const Img = styled.div`
   height: 270px;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
 `;
 
 const ProductContent = styled.div`
